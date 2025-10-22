@@ -1,17 +1,18 @@
 //! Provides resolution of Node requirements into specific versions, using the NodeJS index
-
 use std::fs::File;
 use std::io::Write;
 use std::time::{Duration, SystemTime};
 
 use super::super::registry_fetch_error;
 use super::metadata::{NodeEntry, NodeIndex, RawNodeIndex};
+use crate::config::load::load_settings;
 use crate::error::{Context, ErrorKind, Fallible};
 use crate::fs::{create_staging_file, read_file};
 use crate::hook::ToolHooks;
 use crate::layout::volta_home;
 use crate::session::Session;
 use crate::style::progress_spinner;
+use crate::tool::sources::NodeSource;
 use crate::tool::Node;
 use crate::version::{VersionSpec, VersionTag};
 use attohttpc::header::HeaderMap;
@@ -36,7 +37,9 @@ cfg_if! {
     } else {
         /// Returns the URL of the index of available Node versions on the public Node server.
         fn public_node_version_index() -> String {
-            "https://nodejs.org/dist/index.json".to_string()
+            let settings = load_settings();
+            let src = NodeSource::from_settings(&settings.unwrap()).unwrap();
+            src.index_url().unwrap().to_string()
         }
     }
 }

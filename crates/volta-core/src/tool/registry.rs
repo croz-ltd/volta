@@ -2,9 +2,11 @@ use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
 use super::registry_fetch_error;
+use crate::config::load::load_settings;
 use crate::error::{Context, ErrorKind, Fallible};
 use crate::fs::read_dir_eager;
 use crate::style::progress_spinner;
+use crate::tool::sources::RegistrySource;
 use crate::version::{hashmap_version_serde, version_serde};
 use attohttpc::header::ACCEPT;
 use attohttpc::Response;
@@ -29,7 +31,9 @@ cfg_if! {
         }
     } else {
         pub fn public_registry_index(package: &str) -> String {
-            format!("https://registry.npmjs.org/{}", package)
+            let settings = load_settings();
+            let src = RegistrySource::from_settings(&settings.unwrap()).unwrap();
+            format!("{}{}", src.base_url().unwrap().to_string(), package)
         }
     }
 }

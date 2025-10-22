@@ -530,6 +530,10 @@ pub enum ErrorKind {
     YarnVersionNotFound {
         matching: String,
     },
+
+    ConfigError {
+        message: String,
+    },
 }
 
 impl fmt::Display for ErrorKind {
@@ -1452,6 +1456,13 @@ Please verify your internet connection.",
 Please verify that the version is correct."#,
                 matching
             ),
+            ErrorKind::ConfigError { message} => write!(
+                f,
+                r#"Configuration "{}" in invalid.
+
+Please verify that the configuration is correct."#,
+                message
+            ),
         }
     }
 }
@@ -1549,6 +1560,7 @@ impl ErrorKind {
             ErrorKind::ReadNpmManifestError => ExitCode::UnknownError,
             ErrorKind::ReadPackageConfigError { .. } => ExitCode::FileSystemError,
             ErrorKind::ReadPlatformError { .. } => ExitCode::FileSystemError,
+            ErrorKind::ConfigError { .. } => ExitCode::ConfigurationError,
             #[cfg(windows)]
             ErrorKind::ReadUserPathError => ExitCode::EnvironmentError,
             ErrorKind::RegistryFetchError { .. } => ExitCode::NetworkError,

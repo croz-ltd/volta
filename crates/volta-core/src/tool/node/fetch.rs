@@ -4,11 +4,13 @@ use std::fs::{read_to_string, write, File};
 use std::path::{Path, PathBuf};
 
 use super::NodeVersion;
+use crate::config::load::load_settings;
 use crate::error::{Context, ErrorKind, Fallible};
 use crate::fs::{create_staging_dir, create_staging_file, rename};
 use crate::hook::ToolHooks;
 use crate::layout::volta_home;
 use crate::style::{progress_bar, tool_version};
+use crate::tool::sources::NodeSource;
 use crate::tool::{self, download_tool_error, Node};
 use crate::version::{parse_version, VersionSpec};
 use archive::{self, Archive};
@@ -29,7 +31,9 @@ cfg_if! {
         }
     } else {
         fn public_node_server_root() -> String {
-            "https://nodejs.org/dist".to_string()
+            let settings = load_settings();
+            let src = NodeSource::from_settings(&settings.unwrap()).unwrap();
+            src.base_url().unwrap().to_string()
         }
     }
 }

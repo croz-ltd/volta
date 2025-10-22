@@ -18,6 +18,7 @@ pub mod package;
 pub mod pnpm;
 mod registry;
 mod serial;
+mod sources;
 pub mod yarn;
 
 pub use node::{

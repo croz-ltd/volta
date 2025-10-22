@@ -38,6 +38,23 @@ Read the [Getting Started Guide](https://docs.volta.sh/guide/getting-started) on
 
 Read the [Understanding Volta Guide](https://docs.volta.sh/guide/understanding) on our website for detailed instructions on how to use Volta.
 
+## Mirrors
+
+Volta can use alternate download mirrors.
+
+### Environment variables
+- `VOLTA_NODE_DIST_BASE`: Base URL for Node.js distributions (default: `https://nodejs.org/dist`).
+- `VOLTA_REGISTRY_BASE`: Base URL for Node.js distributions (default: `https://registry.npmjs.org/`).
+
+### Config file
+Create `~/.volta/config.toml` (Windows: `%LOCALAPPDATA%\Volta\config.toml`):
+
+```toml
+[mirrors]
+node = "https://mirror.company.local/nodejs/dist"
+registry = "https://registry.company.org/"
+```
+
 ## Contributing to Volta
 
 Contributions are always welcome, no matter how large or small. Substantial feature ideas should be proposed as an [RFC](https://github.com/volta-cli/rfcs). Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md).

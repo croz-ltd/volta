@@ -53,6 +53,8 @@ indexmap = "2.7.0"
 retry = "2"
 fs2 = "0.4.3"
 which = "7.0.1"
+url = "2.3.0"
+toml = "0.8.23"
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.55.0"

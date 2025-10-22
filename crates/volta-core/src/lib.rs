@@ -1,6 +1,7 @@
 //! The main implementation crate for the core of Volta.
 
 mod command;
+pub mod config;
 pub mod error;
 pub mod event;
 pub mod fs;
